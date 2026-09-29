@@ -1,0 +1,12 @@
+project: savantenvs/py-pdf-parser
+target: load-fuzz-buggy-mhh-run-8
+# origin: https://app.mayhem.security/mayhemheroes/py-pdf-parser/load-fuzz/8
+cmds:
+  - cmd: /mayhem/load-fuzz
+    libfuzzer: true
+    # Atheris re-instruments py_pdf_parser on every single-file exec (cold Python/atheris
+    # startup, ~0.6s even on a fast dev box); a slower CI host easily exceeds a tight default
+    # per-exec timeout, so most of the (genuinely crashing) replayed inputs get silently
+    # dropped as "did not crash" instead of reported. Generous per PORTING.md §"Hangs are
+    # findings".
+    timeout: 15
